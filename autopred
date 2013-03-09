@@ -1,0 +1,34 @@
+#!/usr/bin/env python3.2
+
+# This test really fries the algorithms...
+
+import random
+from lib.util import echo
+from lib.game import Game
+
+def print_internal(game):
+    echo("History", game.history)
+    for rule in game.player.rules:
+        echo(rule)
+        echo("Value", rule.value)
+        echo("Weights", rule.get_weights())
+
+def print_score(game):
+    s = sum(1 for h in game.history if h[0]==h[1])
+    echo("Total", len(game.history), s, s/len(game.history))
+
+    s = sum(1 for h in game.history[-10:] if h[0]==h[1])
+    echo("Last 10", s, s/len(game.history[-10:]))
+
+def main():
+    N = 300
+    SPACE_SIZE = 5
+    game = Game(SPACE_SIZE)
+
+    for i in range(N):
+        game.player_pick()
+        game.player_collect(random.randint(0, SPACE_SIZE-1))
+
+    print_score(game)
+
+main()
